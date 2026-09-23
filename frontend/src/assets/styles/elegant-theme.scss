@@ -4184,3 +4184,349 @@ body.dark-theme .gift-card-shortcut:focus-visible {
     height: clamp(38px, 11vw, 42px);
   }
 }
+
+/* Scale the complete desktop dashboard, not only its navigation and buttons.
+   The mobile layout intentionally keeps its existing single-column rhythm. */
+@media (min-width: 1200px) {
+  .content-area:has(.elegant-dashboard) {
+    width: min(1320px, calc(100vw - 80px)) !important;
+    max-width: 1320px !important;
+  }
+
+  .elegant-dashboard {
+    max-width: 1320px;
+    padding-right: clamp(32px, 3vw, 48px);
+    padding-left: clamp(32px, 3vw, 48px);
+  }
+
+  .elegant-page-heading {
+    margin-bottom: 18px;
+  }
+
+  .elegant-page-heading h1 {
+    font-size: 30px;
+  }
+
+  .elegant-page-heading p {
+    margin-top: 9px;
+    font-size: 14px;
+  }
+
+  .elegant-live-dot {
+    padding: 8px 12px;
+    gap: 8px;
+    font-size: 12px;
+  }
+
+  .elegant-live-dot i {
+    width: 7px;
+    height: 7px;
+  }
+
+  .elegant-dashboard__hero {
+    min-height: 212px;
+    padding: 32px 36px;
+    border-radius: 25px;
+  }
+
+  .elegant-dashboard__hero-copy {
+    max-width: 440px;
+    padding: 14px 18px;
+    gap: 6px;
+    border-radius: 15px;
+  }
+
+  .elegant-eyebrow {
+    font-size: 11px;
+  }
+
+  .elegant-dashboard__hero-copy strong {
+    font-size: 19px;
+  }
+
+  .elegant-dashboard__hero-copy span:last-child {
+    font-size: 13px;
+  }
+
+  .elegant-notice-panel {
+    min-height: 86px;
+    margin-top: 18px;
+    padding: 16px 20px;
+    gap: 20px;
+    border-radius: 21px;
+  }
+
+  .elegant-notice-panel__leading {
+    gap: 14px;
+  }
+
+  .elegant-notice-panel__icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+
+  .elegant-notice-panel__copy > span,
+  .elegant-notice-panel__copy small {
+    font-size: 12px;
+  }
+
+  .elegant-notice-panel__copy > button,
+  .elegant-notice-panel__copy > strong {
+    font-size: 15px;
+  }
+
+  .elegant-dashboard .elegant-notice-panel__actions > button {
+    min-width: 44px;
+    height: 44px;
+    border-radius: 12px;
+  }
+
+  .elegant-dashboard .elegant-notice-panel__actions > .elegant-notice-panel__open {
+    min-width: 132px;
+    padding-inline: 16px;
+    font-size: 13px;
+  }
+
+  .elegant-pending-order {
+    min-height: 74px;
+    margin-top: 16px;
+    padding: 16px 18px;
+    gap: 14px;
+  }
+
+  .elegant-pending-order__icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .elegant-pending-order__copy strong {
+    font-size: 15px;
+  }
+
+  .elegant-pending-order__copy small {
+    font-size: 12px;
+  }
+
+  .elegant-dashboard .elegant-pending-order__action {
+    min-height: 44px;
+    padding-inline: 16px;
+    font-size: 13px;
+  }
+
+  .elegant-dashboard .elegant-dashboard__grid {
+    gap: 18px;
+    margin-top: 18px;
+  }
+
+  .elegant-dashboard .elegant-card {
+    min-height: 510px;
+    padding: 28px;
+    border-radius: 24px;
+  }
+
+  .elegant-dashboard .elegant-card__head {
+    gap: 16px;
+  }
+
+  .elegant-dashboard .elegant-label {
+    font-size: 13px;
+  }
+
+  .elegant-dashboard .elegant-card h2 {
+    margin-top: 7px;
+    font-size: 20px;
+  }
+
+  .elegant-dashboard .elegant-status {
+    padding: 6px 11px;
+    font-size: 12px;
+  }
+
+  .elegant-dashboard .elegant-plan-card .elegant-usage {
+    margin-top: 18px;
+  }
+
+  .elegant-dashboard .elegant-plan-card .elegant-usage__ring {
+    width: 132px;
+    height: 132px;
+    margin-bottom: 18px;
+  }
+
+  .elegant-dashboard .elegant-plan-card .elegant-usage__ring::before {
+    width: 104px;
+    height: 104px;
+  }
+
+  .elegant-dashboard .elegant-plan-card .elegant-usage__ring strong {
+    font-size: 22px;
+  }
+
+  .elegant-dashboard .elegant-plan-card .elegant-usage__ring span {
+    font-size: 11px;
+  }
+
+  .elegant-dashboard .elegant-plan-card .elegant-usage__meta div {
+    padding: 9px 0;
+  }
+
+  .elegant-dashboard .elegant-usage__meta span {
+    font-size: 12px;
+  }
+
+  .elegant-dashboard .elegant-usage__meta strong {
+    font-size: 14px;
+  }
+
+  .elegant-dashboard .elegant-detail-card {
+    gap: 4px;
+  }
+
+  .elegant-dashboard .elegant-detail-row {
+    gap: 15px;
+    padding: 17px 0;
+  }
+
+  .elegant-dashboard .elegant-detail-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+  }
+
+  .elegant-dashboard .elegant-detail-copy small,
+  .elegant-dashboard .elegant-detail-copy em {
+    font-size: 12px;
+  }
+
+  .elegant-dashboard .elegant-detail-copy strong {
+    font-size: 16px;
+  }
+
+  .elegant-dashboard .elegant-activity-card .elegant-activity-chart {
+    min-height: 350px;
+  }
+
+  .elegant-dashboard .elegant-activity-card .elegant-activity-bars {
+    min-height: 300px;
+  }
+
+  .elegant-dashboard .elegant-activity-card .elegant-activity-bar-track {
+    height: 252px;
+  }
+
+  .elegant-dashboard .elegant-traffic-alert {
+    margin-top: 24px;
+    margin-bottom: 24px;
+  }
+
+  .elegant-dashboard .elegant-plan-depleted {
+    margin-top: 16px;
+    padding: 12px 28px 12px 12px;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 12px;
+    border-radius: 14px;
+  }
+
+  .elegant-dashboard .elegant-plan-depleted__gif {
+    width: 52px;
+    height: 52px;
+  }
+
+  .elegant-dashboard .elegant-plan-depleted__copy strong {
+    font-size: 14px;
+  }
+
+  .elegant-dashboard .elegant-plan-depleted__copy small {
+    font-size: 12px;
+  }
+
+  .elegant-dashboard .elegant-dashboard-alert {
+    min-height: 88px;
+    margin-top: 18px;
+    padding: 18px 22px;
+  }
+
+  .elegant-dashboard .elegant-dashboard-alert__icon {
+    width: 46px;
+    height: 46px;
+  }
+
+  .elegant-dashboard .elegant-dashboard-alert__copy strong {
+    font-size: 16px;
+  }
+
+  .elegant-dashboard .elegant-dashboard-alert__copy p {
+    font-size: 14px;
+  }
+
+  .elegant-dashboard .elegant-dashboard-alert__actions .elegant-button,
+  .elegant-dashboard .elegant-reminder-enabled {
+    min-height: 44px;
+    padding-inline: 16px;
+    font-size: 13px;
+  }
+
+  .elegant-dashboard .elegant-button {
+    min-height: 46px;
+    padding-inline: 18px;
+    font-size: 13px;
+  }
+
+  .elegant-dashboard .elegant-hero-action {
+    min-height: 50px;
+    padding: 13px 21px;
+    font-size: 15px;
+  }
+
+  .elegant-dashboard .elegant-shortcuts {
+    gap: 18px;
+    margin-top: 22px;
+  }
+
+  .elegant-dashboard .elegant-shortcut {
+    min-height: 106px;
+    padding: 20px 22px;
+    gap: 16px;
+    border-radius: 22px;
+  }
+
+  .elegant-dashboard .elegant-shortcut__icon {
+    width: 52px;
+    height: 52px;
+    border-radius: 15px;
+  }
+
+  .elegant-dashboard .elegant-shortcut strong {
+    font-size: 16px;
+  }
+
+  .elegant-dashboard .elegant-shortcut small {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1199px) {
+  .elegant-dashboard .elegant-page-heading h1 {
+    font-size: 28px;
+  }
+
+  .elegant-dashboard .elegant-card {
+    padding: 22px;
+  }
+
+  .elegant-dashboard .elegant-label {
+    font-size: 12px;
+  }
+
+  .elegant-dashboard .elegant-card h2 {
+    font-size: 18px;
+  }
+
+  .elegant-dashboard .elegant-shortcut strong {
+    font-size: 14px;
+  }
+
+  .elegant-dashboard .elegant-shortcut small {
+    font-size: 11px;
+  }
+}
