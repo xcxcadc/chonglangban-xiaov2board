@@ -1027,6 +1027,7 @@ import {
 import {useRouter} from 'vue-router';
 import {useI18n} from 'vue-i18n';
 import {CLIENT_CONFIG, DASHBOARD_CONFIG, isXiaoV2board, SITE_CONFIG} from '@/utils/baseConfig';
+import {getProtectedSubscriptionUrl} from '@/api/utils/encryption';
 import {
   IconAlertTriangle,
   IconBox,
@@ -1767,7 +1768,7 @@ export default {
             userPlan.value.resetDay = subscribe.reset_day;
           }
           if (subscribe.subscribe_url) {
-            userPlan.value.subscribeUrl = subscribe.subscribe_url;
+            userPlan.value.subscribeUrl = await getProtectedSubscriptionUrl(subscribe.subscribe_url);
           }
 
           if (subscribe.device_limit !== undefined) {

@@ -923,6 +923,7 @@ import useToast from '@/hooks/useToast';
 import { reloadMessages } from '@/i18n';
 
 import { DASHBOARD_CONFIG, PROFILE_CONFIG } from '@/utils/baseConfig';
+import { getProtectedSubscriptionUrl } from '@/api/utils/encryption';
 import { formatDeviceName, formatProfileTimestamp, getDeviceType } from './composables/profileDevice';
 
 
@@ -1181,7 +1182,9 @@ const fetchSubscribeInfo = async () => {
 
     if (response && response.data) {
 
-      subscriptionUrl.value = response.data.subscribe_url || '';
+      subscriptionUrl.value = response.data.subscribe_url
+        ? await getProtectedSubscriptionUrl(response.data.subscribe_url)
+        : '';
 
     }
 

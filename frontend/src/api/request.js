@@ -3,7 +3,7 @@ import axios from 'axios';
 import { API_BASE_URL, getApiBaseUrl, isXiaoV2board, isXboard, CUSTOM_HEADERS_CONFIG } from '@/utils/baseConfig';
 import { mapApiPath } from './utils/pathMapper';
 import { getAvailableApiUrl } from '@/utils/apiAvailabilityChecker';
-import { getEncrypUrl, randomIv } from "@/api/utils/encryption";
+import { getEncryptedPath, getMiddlewareProtocol, isAeadMiddlewareEnabled, randomIv } from "@/api/utils/encryption";
 import { readAuthData } from '@/api/client/authToken';
 import { applyCustomHeaders } from '@/api/client/headers';
 import { normalizeRequestError } from '@/api/client/errors';
@@ -15,8 +15,11 @@ const REQUEST_TIMEOUT = 20000;
 
 const isEncrypted = window.CHONGLANGBAN_CONFIG &&
   window.CHONGLANGBAN_CONFIG.API_MIDDLEWARE_ENABLED &&
-  window.CHONGLANGBAN_CONFIG.API_MIDDLEWARE_KEY &&
-  window.CHONGLANGBAN_CONFIG.API_MIDDLEWARE_KEY !== '';
+  ((getMiddlewareProtocol() === 'aead' && isAeadMiddlewareEnabled()) ||
+    (getMiddlewareProtocol() !== 'aead' && window.CHONGLANGBAN_CONFIG.API_MIDDLEWARE_KEY &&
+      window.CHONGLANGBAN_CONFIG.API_MIDDLEWARE_KEY !== ''));
+
+const isLegacyEncrypted = isEncrypted && getMiddlewareProtocol() !== 'aead';
 
 const request = axios.create({
   baseURL: API_BASE_URL,
@@ -24,7 +27,7 @@ const request = axios.create({
   headers: {
     'Content-Type': 'application/json',
     // 只有在加密模式下才添加 X-IV 头
-    ...(isEncrypted && { 'X-IV': randomIv() }),
+    ...(isLegacyEncrypted && { 'X-IV': randomIv() }),
   }
 });
 
@@ -91,14 +94,21 @@ request.interceptors.request.use(
     config.__chonglangbanOriginalUrl = originalUrl;
     
     if (window.CHONGLANGBAN_CONFIG && window.CHONGLANGBAN_CONFIG.API_MIDDLEWARE_ENABLED) {
+      if (getMiddlewareProtocol() === 'aead' && !isAeadMiddlewareEnabled()) {
+        throw new Error('已启用 AES-GCM，但未配置有效的 API_MIDDLEWARE_AEAD_KEY');
+      }
       const path = originalUrl.startsWith("http")
         ? mapApiPath(originalUrl)
-        : `${window.CHONGLANGBAN_CONFIG.API_MIDDLEWARE_PATH}/${encodeURIComponent(btoa(getEncrypUrl(originalUrl)))}`;
+        : isEncrypted
+          ? `${window.CHONGLANGBAN_CONFIG.API_MIDDLEWARE_PATH}/${encodeURIComponent(await getEncryptedPath(originalUrl))}`
+          : mapApiPath(originalUrl);
       
       config.url = isEncrypted ? path : mapApiPath(originalUrl);
 
-      if (isEncrypted) {
+      if (isLegacyEncrypted) {
         config.headers['X-IV'] = randomIv();
+      } else if (getMiddlewareProtocol() === 'aead') {
+        delete config.headers['X-IV'];
       }
       
       if (import.meta.env.DEV) {
