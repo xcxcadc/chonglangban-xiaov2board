@@ -65,8 +65,10 @@ export const getApiBaseUrl = () => {
             const formattedPath = middlewarePath.startsWith('/') ? middlewarePath : `/${middlewarePath}`;
 
             const middlewareKey = window.CHONGLANGBAN_CONFIG.API_MIDDLEWARE_KEY;
+            const aeadEnabled = String(window.CHONGLANGBAN_CONFIG.API_MIDDLEWARE_PROTOCOL || '').toLowerCase() === 'aead'
+                && /^[0-9a-f]{64}$/i.test(String(window.CHONGLANGBAN_CONFIG.API_MIDDLEWARE_AEAD_KEY || ''));
             
-            if(middlewareKey) {
+            if (middlewareKey || aeadEnabled) {
               return formattedUrl;
             }
             return formattedUrl + formattedPath;
