@@ -13,7 +13,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@originjs/crypto-js-wasm": "^1.1.1",
     "@tabler/icons-vue": "^3.30.0",
     "@vue/compat": "^3.5.13",
     "@vue/runtime-core": "^3.5.13",
@@ -21,31 +20,26 @@
     "@vue/shared": "^3.5.13",
     "@vueuse/core": "^13.0.0",
     "@vueuse/motion": "^3.0.3",
-    "aieditor": "^1.4.1",
-    "axios": "^0.27.2",
+    "axios": "^1.20.0",
     "chart.js": "^3.9.1",
     "core-js": "^3.25.0",
-    "crisp": "^1.0.0",
     "crisp-sdk-web": "^1.0.25",
     "crypto-js": "^4.2.0",
     "disable-devtool": "^0.3.9",
-    "dompurify": "^3.2.4",
-    "echarts": "^5.6.0",
+    "dompurify": "^3.4.16",
+    "echarts": "^6.1.0",
     "jsencrypt": "^3.3.2",
-    "markdown-it": "^14.1.0",
+    "markdown-it": "^15.0.2",
     "marked": "^15.0.7",
     "nprogress": "^0.2.0",
     "pinia": "^3.0.3",
     "postscribe": "^2.0.8",
     "qrcode": "^1.5.4",
     "qrcode.vue": "^3.6.0",
-    "shepherd.js": "^14.5.0",
     "vue-confetti": "^2.3.0",
     "vue-confetti-explosion": "^1.0.2",
     "vue-i18n": "^9.2.2",
-    "vue-markdown-render": "^2.2.1",
     "vue-router": "^4.5.0",
-    "vue-shepherd": "^5.0.1",
     "vue3-qrcode": "^0.0.2"
   },
   "devDependencies": {
@@ -65,5 +59,8 @@
   },
   "volta": {
     "node": "20.19.6"
+  },
+  "overrides": {
+    "nanoid": "^3.3.19"
   }
 }

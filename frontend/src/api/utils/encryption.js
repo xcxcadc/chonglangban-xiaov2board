@@ -3,6 +3,7 @@ import CryptoJS from "crypto-js";
 const LEGACY_PROTOCOL = 'legacy';
 const AEAD_PROTOCOL = 'aead';
 const AEAD_AD = new TextEncoder().encode('chonglangban:v2:path');
+let memoryIv = '';
 
 const getConfig = () => (
   typeof window !== 'undefined' && window.CHONGLANGBAN_CONFIG
@@ -21,15 +22,25 @@ export const isAeadMiddlewareEnabled = () => (
 
 // 获取或生成 v1 兼容协议的 IV。
 export const randomIv = () => {
-  const saveIv = localStorage.getItem('temp_iv');
+  let saveIv = '';
+  try {
+    saveIv = localStorage.getItem('temp_iv') || '';
+  } catch (error) {
+    saveIv = memoryIv;
+  }
   if (saveIv && /^[0-9a-f]{16}$/i.test(saveIv)) {
     return saveIv;
   }
 
   const bytes = new Uint8Array(8);
-  crypto.getRandomValues(bytes);
+  globalThis.crypto.getRandomValues(bytes);
   const hex = Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('');
-  localStorage.setItem('temp_iv', hex);
+  memoryIv = hex;
+  try {
+    localStorage.setItem('temp_iv', hex);
+  } catch (error) {
+    // 隐私模式或禁用存储时使用内存回退，不能让请求初始化失败。
+  }
   return hex;
 };
 
@@ -137,6 +148,14 @@ export async function getProtectedSubscriptionUrl(rawUrl) {
   const middlewarePath = String(config.API_MIDDLEWARE_PATH || '').replace(/^\/+|\/+$/g, '');
   if (!middlewareUrl || !middlewarePath) {
     throw new Error('AES-GCM 订阅链接缺少中间件地址或路径配置');
+  }
+  const middlewareOrigin = new URL(middlewareUrl, window.location.origin).origin;
+  const encryptedPrefix = `/${middlewarePath}/`;
+  if (parsed.origin === middlewareOrigin && parsed.pathname.startsWith(encryptedPrefix)) {
+    const encryptedSegment = parsed.pathname.slice(encryptedPrefix.length);
+    if (encryptedSegment.startsWith('v2.')) {
+      return rawUrl;
+    }
   }
   const logicalPath = `${parsed.pathname}${parsed.search}`;
   const encryptedPath = await getEncryptedPath(logicalPath);

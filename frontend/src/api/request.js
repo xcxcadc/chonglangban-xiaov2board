@@ -20,6 +20,7 @@ const isEncrypted = window.CHONGLANGBAN_CONFIG &&
       window.CHONGLANGBAN_CONFIG.API_MIDDLEWARE_KEY !== ''));
 
 const isLegacyEncrypted = isEncrypted && getMiddlewareProtocol() !== 'aead';
+const isAbsoluteHttpUrl = value => /^https?:\/\//i.test(String(value || ''));
 
 const request = axios.create({
   baseURL: API_BASE_URL,
@@ -92,6 +93,15 @@ request.interceptors.request.use(
     // Preserve the logical endpoint so a retry never encrypts an already mapped URL.
     const originalUrl = config.__chonglangbanOriginalUrl || config.url;
     config.__chonglangbanOriginalUrl = originalUrl;
+    const isExternalAbsoluteUrl = isAbsoluteHttpUrl(originalUrl) &&
+      new URL(originalUrl, window.location.origin).origin !== window.location.origin;
+
+    // 站外辅助请求（例如 IP 定位）不能经过中间件，也不能携带面板登录凭据。
+    if (isExternalAbsoluteUrl) {
+      config.__chonglangbanExternalRequest = true;
+      config.baseURL = '';
+      return config;
+    }
     
     if (window.CHONGLANGBAN_CONFIG && window.CHONGLANGBAN_CONFIG.API_MIDDLEWARE_ENABLED) {
       if (getMiddlewareProtocol() === 'aead' && !isAeadMiddlewareEnabled()) {
@@ -136,7 +146,7 @@ request.interceptors.request.use(
       config.headers['Content-Type'] = 'application/x-www-form-urlencoded';
     }
     
-    const authData = await readAuthData();
+    const authData = config.__chonglangbanExternalRequest ? '' : await readAuthData();
     
     if (authData) {
       config.headers['Authorization'] = authData;
@@ -175,6 +185,10 @@ request.interceptors.response.use(
   },
   error => {
     console.error('请求错误:', error);
+
+    if (axios.isCancel(error)) {
+      return Promise.reject(error);
+    }
 
     redirectToLoginAfterAuthFailure(error);
     

@@ -1,5 +1,7 @@
 # chonglangban
 
+中间件对接、v2 加密订阅和生产部署请参阅 [主题与加密中间件使用方法](docs/middleware-usage.zh-CN.md)。
+
 chonglangban 是云上冲浪板的用户中心前端，适配 V2Board / Xiao-V2board / Xboard。
 
 # V2Board User 前端项目
